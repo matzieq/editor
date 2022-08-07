@@ -9,9 +9,15 @@ const {
 const { ipcMain } = require("electron/main");
 const path = require("path");
 const fs = require("fs");
-require("electron-reloader")(module);
+const isDev = process.env.NODE_ENV === "dev";
 
 const isMac = process.platform === "darwin";
+
+if (isDev) {
+  try {
+    require("electron-reloader")(module);
+  } catch {}
+}
 
 /** @type BrowserWindow */
 let mainWindow;
@@ -22,13 +28,13 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 700,
-    titleBarStyle: "hiddenInset",
     webPreferences: {
       preload: path.join(app.getAppPath(), "renderer.js"),
       nodeIntegration: true,
       contextIsolation: false,
     },
-    title: "editor",
+
+    title: app.name,
   });
 
   /** @type MenuItem[] */
@@ -57,10 +63,12 @@ const createWindow = () => {
         {
           label: "New",
           click: () => ipcMain.emit("new-doc-triggered"),
+          accelerator: "CommandOrControl+N",
         },
         {
           label: "Open",
           click: () => ipcMain.emit("open-doc-triggered"),
+          accelerator: "CommandOrControl+O",
         },
         { role: "separator" },
         {
@@ -79,10 +87,22 @@ const createWindow = () => {
       ],
     },
     { role: "editMenu" },
+    {
+      label: "View",
+      submenu: [
+        { role: "resetZoom" },
+        { role: "zoomIn" },
+        { role: "zoomOut" },
+        { type: "separator" },
+        { role: "togglefullscreen" },
+      ],
+    },
   ];
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
   mainWindow.loadFile("index.html");
 };
 
@@ -107,6 +127,7 @@ ipcMain.on("new-doc-triggered", () => {
         } else {
           app.addRecentDocument(filePath);
           openFilePath = filePath;
+          mainWindow.setTitle(path.parse(filePath).base);
           mainWindow.webContents.send("document-created", filePath);
         }
       });
@@ -128,6 +149,7 @@ ipcMain.on("open-doc-triggered", () => {
         } else {
           app.addRecentDocument(filePath);
           openFilePath = filePath;
+          mainWindow.setTitle(path.parse(filePath).base);
           mainWindow.webContents.send("document-opened", { filePath, data });
         }
       });

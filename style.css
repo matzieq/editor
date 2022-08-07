@@ -13,6 +13,8 @@ body {
   color: #3c3836;
   height: 100vh;
   font-family: sans-serif;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .header {
@@ -52,13 +54,16 @@ body {
 }
 
 main {
-  height: calc(100% - 50px);
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  margin-top: 5rem;
+  height: calc(100% - 5rem);
+  overflow: hidden;
 }
 
 main textarea {
+  overflow: hidden;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 5rem);
   max-width: 40rem;
   margin: 0 auto;
   display: block;
@@ -67,4 +72,6 @@ main textarea {
   outline: none;
   resize: none;
   font-size: 1rem;
+  font-family: sans-serif;
+  line-height: 1.5rem;
 }

@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "NODE_ENV=dev electron .",
+    "build": "electron-builder"
   },
   "author": "",
   "license": "GPLV3",
