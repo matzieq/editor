@@ -7,7 +7,7 @@
     "start": "electron ."
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPLV3",
   "devDependencies": {
     "electron": "^20.0.1",
     "electron-builder": "^23.3.3",
