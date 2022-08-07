@@ -12,9 +12,11 @@ body {
   background-color: #fbf1c7;
   color: #3c3836;
   height: 100vh;
+  font-family: sans-serif;
 }
 
 .header {
+  font-size: 1rem;
   background-color: #a89984;
   height: 50px;
   -webkit-app-region: drag;
@@ -23,9 +25,13 @@ body {
   justify-content: flex-end;
 }
 
-.header .doc-name,
+.header #doc-name,
 .header .menu {
   margin-right: 10px;
+}
+
+.doc-name {
+  display: block;
 }
 
 .header ul {
@@ -42,6 +48,7 @@ body {
   border: none;
   outline: none;
   padding: 5px 10px;
+  font-size: 1rem;
 }
 
 main {
